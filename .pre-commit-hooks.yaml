@@ -1,0 +1,9 @@
+---
+- id: mcg
+  name: mcg
+  description: Monitor Config Generator
+  language: golang
+  entry: mcg
+  always_run: true
+  args: []
+  pass_filenames: false
