@@ -32,7 +32,7 @@ type kustomizeFile struct {
 	Kind              string            `yaml:"kind"`
 	CommonAnnotations map[string]string `yaml:"commonAnnotations,omitempty"`
 	Bases             []string          `yaml:"bases,omitempty"`
-	Resources         []string          `yaml:"resources,omitempty"`
+	Resources         []string          `yaml:"resources"`
 }
 
 type Config struct {
@@ -50,7 +50,7 @@ func cleanDir(dir string) error {
 	if err != nil {
 		return err
 	}
-	err = os.MkdirAll(dir, 0775)
+	err = os.MkdirAll(dir, 0o775)
 	if err != nil {
 		return err
 	}
@@ -96,7 +96,7 @@ func generateKustomizeFile(dir string) error {
 		return err
 	}
 	kf := filepath.Join(dir, "kustomization.yaml")
-	err = os.WriteFile(kf, b.Bytes(), 0666)
+	err = os.WriteFile(kf, b.Bytes(), 0o666)
 	return err
 }
 
@@ -210,7 +210,7 @@ func processRulesDir(d string, c Config) error {
 // filepath.Walk is used to walk the directories, and that function works in lexical order
 func appendPath(p string, c *Config) {
 	f, err := os.OpenFile(filepath.Join(c.ManifestsDir, ".manifests"),
-		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
 	if err != nil {
 		log.Fatal().Msg(fmt.Sprintf("failed to append to .manifests: %s", err.Error()))
 	}
